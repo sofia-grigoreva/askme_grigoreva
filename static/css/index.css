@@ -1,0 +1,224 @@
+/* ---General----------------------------------------------------------------------- */
+
+.navbar {
+    background-color: #4a198a;
+  }
+
+.general_info {
+    background-color: #ad85e0;
+  }
+
+/* ---Text----------------------------------------------------------------------- */
+
+.light-text {
+    color: #4a198a;
+  }
+
+.dark-text {
+    color: #200941;
+  }
+
+.ask-label {
+    color: #4a198a;
+    width: 70px;
+  }
+
+.set-label {
+    color: #4a198a;
+    width: 160px;
+  }
+
+.log-label {
+    color: #4a198a;
+    width: 160px;
+  }
+
+.reg-label {
+    color: #4a198a;
+    width: 200px;
+  }
+
+/* ---Buttons----------------------------------------------------------------------- */
+
+.bth {
+    background-color: transparent;
+    border: 1px solid #4a198a; 
+    border-radius: 5px; 
+    color: #4a198a;
+  }
+
+.bth:hover {
+    background-color: #4a198a;
+    color: #ffffff;
+  }
+
+#ans-bth {
+    height: 35px;
+    width: 100px;
+  }
+
+#ask-bth {
+    height: 40px;
+    width: 120px;
+    margin-left: 95px;
+  }
+
+#save-bth {
+    height: 40px;
+    width: 120px;
+    margin-left: 185px;
+  }
+
+#login-bth {
+    height: 40px;
+    width: 120px;
+    margin-left: 185px;
+  }
+
+#choose-bth {
+    height: 35px;
+  }
+
+#like-bth {
+    background-image: url('../img/like.png'); 
+    background-size: cover; 
+    background-position: center; 
+    height: 37px;
+    width: 40px;
+  }
+
+#dislike-bth {
+    background-image: url('../img/dislike.png'); 
+    background-size: cover; 
+    background-position: center; 
+    height: 37px;
+    width: 40px;
+  }
+
+/* ---Forms----------------------------------------------------------------------- */
+
+.form {
+    background-color: white; 
+    color: #140627;
+    border: 1px solid transparent; 
+    border-radius: 7px; 
+    font-size: 16px; 
+    transition: border-color 0.3s;
+    padding: 10px; 
+    height: 47px;
+  }
+
+.form:focus {
+    border-color: white; 
+    outline: none; 
+  }
+
+#ans {
+    height: 150px;
+  }
+
+#title {
+    height: 50px;
+  }
+
+#tags {
+    height: 50px;
+  }
+
+#text {
+    height: 250px;
+  }
+
+/* ---Pagination----------------------------------------------------------------------- */
+
+.pagination {
+    color: #6c58bF;
+  }
+
+.pagination a {
+    color: #140627;
+  }
+
+.pagination a:hover,
+.pagination .active a {
+    background-color: #4a198a;
+    color: #ffffff;
+  }
+
+.pagination a:focus {
+    background-color: #4a198a;
+    color: #ffffff;
+  }
+
+.my-checkbox {
+    width: 20px;
+    height: 20px;
+    appearance: none; 
+    border: 1px solid #dee2e6; 
+    border-radius: 4px; 
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0; 
+  }
+
+/* ---Footer----------------------------------------------------------------------- */
+
+.footer {
+    background: linear-gradient(90deg, #4a198a, #ad85e0);
+    height: 100%;
+  }
+
+/* ---Checkbox----------------------------------------------------------------------- */
+
+.my-checkbox:checked {
+    background-color: #4a198a;
+    border-color: #4a198a; 
+  }
+
+.my-checkbox:focus {
+    border-color: #6f42c1;
+    box-shadow: 0 0 0 0.25rem rgba(111, 66, 193, 0.25);
+  }
+
+.my-checkbox:checked::after {
+    color: white;
+    display: block;
+    text-align: center;
+    font-size: 14px;
+    line-height: 18px;
+  }
+
+.form-check-label {
+    display: flex;
+    align-items: center;
+    margin-left: 8px; 
+  }
+
+/* ---Search----------------------------------------------------------------------- */
+
+.search-input {
+    background-color: white; 
+    color: #140627;
+    border: 2px solid transparent; 
+    border-radius: 7px; 
+    padding: 7px; 
+    font-size: 16px; 
+    transition: border-color 0.3s;
+    height: 40px;
+  } 
+
+.search-input:focus {
+    border-color: white; 
+    outline: none; 
+  }
+
+/* ---Hr----------------------------------------------------------------------- */
+
+.hr {
+    border-top: solid #4a198a;
+  }
+
+/* 
+  style="min-height: 84vh;" */
