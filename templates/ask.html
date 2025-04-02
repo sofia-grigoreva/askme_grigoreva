@@ -1,0 +1,20 @@
+
+{% extends "layouts/base.html" %}
+{% load static %}
+
+{% block content %}
+
+  <div class="d-flex align-items-center gap-2 mt-2">
+    <h1 class="dark-text fw-bolder fs-1">New Question</h1>
+  </div>
+
+  <form>
+    {% include 'layouts/form.html' with class="ask-label" text="Title" type="input" id="title" align="start" mt="mt-3" fill="flex-fill" %}
+    {% include 'layouts/form.html' with class="ask-label" text="Text" type="textarea" id="text" align="start" mt="mt-3" fill="flex-fill" %}
+    {% include 'layouts/form.html' with class="ask-label" text="Tags" type="select" id="tags" align="start" mt="mt-3" fill="flex-fill" %}
+    {% include 'layouts/button.html' with text="Ask!" id="ask-bth" style="ml-lg-2"%}
+  </form>
+
+  {% include 'layouts/pagination.html' %}
+
+{% endblock %}

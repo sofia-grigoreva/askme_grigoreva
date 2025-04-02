@@ -1,0 +1,28 @@
+{% load static %}
+
+<div class="card me-lg-3">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-2 d-flex flex-column align-items-center">
+          <div class="border mb-2 d-flex justify-content-center">
+            <img src="{% static '/img/avatar.jpg' %}" alt="avatar" class="img img-fluid">
+          </div>
+          <div class="d-flex justify-content-center">
+            <button id="like-bth" type="button" class="btn btn-success me-2"></button>
+            <button id="dislike-bth" type="button" class="btn btn-danger"></button>
+          </div>
+        </div>
+        <div class="col-lg d-flex flex-column justify-content-between mt-3 mt-lg-0">
+          <div>
+            <p class="card-text">{{question.title}}</p>
+          </div>
+          <form class="d-flex align-items-center mt-3 mt-lg-0">
+            <input class="my-checkbox form-check-input me-2" type="checkbox" value="" id="cor-form">
+            <label class="light-text form-check-label fs-5" for="cor-form">
+              Correct!
+            </label>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>

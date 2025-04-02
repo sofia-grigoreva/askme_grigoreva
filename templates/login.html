@@ -1,0 +1,24 @@
+{% extends "layouts/base_notreg.html" %}
+{% load static %}
+
+{% block content %}
+
+  <div class="d-flex align-items-center gap-2 mt-2 mb-3">
+    <h1 class="dark-text fw-bolder fs-1">Log In</h1>
+  </div>
+
+  <form>
+    {% include 'layouts/form.html' with class="log-label" text="Login" type="input" id="login" align="center" mt="mt-2" fill="" %}
+    {% include 'layouts/error.html' with class="log-label" text="Login must not be empty"%}
+    {% include 'layouts/form.html' with class="log-label" text="Password" type="input" id="password" align="center" mt="mt-3" fill="" %}
+    {% include 'layouts/error.html' with class="log-label" text="The password must contain capital letters"%}
+    {% include 'layouts/button.html' with text="Log in!" id="login-bth" style=""%}
+  </form>
+
+  <div class="mt-4 mb-lg-0 mb-3">
+    <a href="{% url "signup" %}" class="light-text fs-5 fw-bolder">create new account</a>
+  </div>
+
+  {% include 'layouts/pagination.html' %}
+
+{% endblock %}

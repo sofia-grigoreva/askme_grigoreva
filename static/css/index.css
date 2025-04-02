@@ -131,24 +131,35 @@
 
 /* ---Pagination----------------------------------------------------------------------- */
 
-.pagination {
-    color: #6c58bF;
+  .current-page .page-link {
+    background-color: #4a198a !important;
+    color: #ffffff !important;
   }
-
-.pagination a {
+  
+  .pagination a {
     color: #140627;
   }
-
-.pagination a:hover,
-.pagination .active a {
+  
+  .pagination a:hover,
+  .pagination .active a {
     background-color: #4a198a;
     color: #ffffff;
   }
-
-.pagination a:focus {
+  
+  .pagination a:focus {
     background-color: #4a198a;
     color: #ffffff;
+    box-shadow: 0 0 0 0.2rem rgba(111, 66, 193, 0.25);
   }
+
+/* ---Footer----------------------------------------------------------------------- */
+
+.footer {
+    background: linear-gradient(90deg, #4a198a, #ad85e0);
+    height: 100%;
+  }
+
+/* ---Checkbox----------------------------------------------------------------------- */
 
 .my-checkbox {
     width: 20px;
@@ -163,14 +174,6 @@
     margin: 0; 
   }
 
-/* ---Footer----------------------------------------------------------------------- */
-
-.footer {
-    background: linear-gradient(90deg, #4a198a, #ad85e0);
-    height: 100%;
-  }
-
-/* ---Checkbox----------------------------------------------------------------------- */
 
 .my-checkbox:checked {
     background-color: #4a198a;
@@ -179,7 +182,7 @@
 
 .my-checkbox:focus {
     border-color: #6f42c1;
-    box-shadow: 0 0 0 0.25rem rgba(111, 66, 193, 0.25);
+    box-shadow: 0 0 0 0.2rem rgba(111, 66, 193, 0.25);
   }
 
 .my-checkbox:checked::after {
@@ -220,5 +223,20 @@
     border-top: solid #4a198a;
   }
 
-/* 
-  style="min-height: 84vh;" */
+/* ---Images----------------------------------------------------------------------- */
+
+#user-avatar {
+    height: 70px; 
+    width: 70px; 
+}
+
+#big-avatar  {
+    height: 200px; 
+    width: 200px; 
+} 
+
+.img {
+  height: 100px; 
+  width: 100px; 
+  object-fit: cover;
+  }

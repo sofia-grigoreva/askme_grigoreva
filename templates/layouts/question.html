@@ -1,0 +1,34 @@
+{% load static %}
+
+<div class="card me-lg-3">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-2 d-flex flex-column align-items-center">
+          <div class="border mb-2 d-flex justify-content-center">
+            <img src="{% static '/img/avatar.jpg' %}" alt="avatar" class="img img-fluid">
+          </div>
+          <div class="d-flex justify-content-center">
+            <button id="like-bth" type="button" class="btn btn-success me-2"></button>
+            <button id="dislike-bth" type="button" class="btn btn-danger"></button>
+          </div>
+        </div>
+        <div class="col-lg d-flex flex-column justify-content-between">
+          <div>
+            <h5 class="card-title">{{question.title}}</h5>
+            <p class="card-text ">{{question.text}}</p>
+          </div>
+          <div class="row mt-3 mt-lg-0">
+            <div class="col-lg">
+              <a href="{% url "question" question.id %}" class="light-text link-offset-2 ">Answers ({{question.ansnumber}})</a>
+            </div>
+            <div class="col-lg mt-1 mt-lg-0">
+              <span>Tags:</span>
+              {% for tag in question.tags %}
+              <a class="badge rounded-pill text-bg-success link-light link-offset-1 link-underline-opacity-0 link-underline-opacity-100-hover" href="{% url "tag" tag %}">Tag {{ tag }}</a>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

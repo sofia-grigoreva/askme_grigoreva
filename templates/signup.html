@@ -1,0 +1,34 @@
+{% extends "layouts/base_notreg.html" %}
+{% load static %}
+
+{% block content %}
+
+  <div class="d-flex align-items-center gap-2 mt-2 mb-3">
+    <h1 class="dark-text fw-bolder fs-1">Registration</h1>
+  </div>
+
+  <form>
+
+    {% include 'layouts/form.html' with class="reg-label" text="Login" type="input" id="login" align="center" mt="mt-2" fill="" %}
+    {% include 'layouts/error.html' with class="reg-label" text="Login must not be empty"%}
+    {% include 'layouts/form.html' with class="reg-label" text="Email" type="input" id="email" align="center" mt="mt-2" fill="" %}
+    {% include 'layouts/error.html' with class="reg-label" text="Mail must contain @"%}
+    {% include 'layouts/form.html' with class="reg-label" text="NickName" type="input" id="nick" align="center" mt="mt-2" fill="" %}
+    {% include 'layouts/error.html' with class="reg-label" text="NickName already exists"%}
+    {% include 'layouts/form.html' with class="reg-label" text="Password" type="input" id="password" align="center" mt="mt-2" fill="" %}
+    {% include 'layouts/error.html' with class="reg-label" text="The password must contain capital letters"%}
+    {% include 'layouts/form.html' with class="reg-label" text="Repeat password" type="input" id="repeat" align="center" mt="mt-2" fill="" %}
+    {% include 'layouts/error.html' with class="reg-label" text="Passwords do not match"%}
+    {% include 'layouts/avatar_form.html' with  mt="mt-3" class="reg-label" %}
+
+    <div class="row d-flex align-items-center mt-3 mb-3">
+      <div style="width: 50px"></div>
+      <button id="save-bth" class="bth fw-bolder fs-5" type="submit">Register!</button>
+    </div>
+
+  </form>
+
+  {% include 'layouts/pagination.html' %}
+
+{% endblock %}
+     
