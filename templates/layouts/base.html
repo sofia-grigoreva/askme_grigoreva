@@ -31,21 +31,10 @@
           <input class="search-input me-2" type="search" placeholder="Search" aria-label="Search">
           <button class="btn btn-outline-light" type="submit">Find!</button>
         </form>
-        <div>
-          <a class="btn btn-outline-light fw-bolder fs-5 mt-3 mb-2 mt-lg-0 mb-lg-0" href="{% url "ask" %}" >Ask now!</a>
-        </div>
-        <div class="navbar-user d-flex gap-2 align-items-center">
-          <div class="me-2 mt-1 mb-1">
-            <img src="{% static '/img/avatar.jpg' %}" alt="avatar" class="img img-fluid" id="user-avatar">
-          </div>
-          <div class="content mb-1">
-            <div class="content-name text-white fs-3">Username</div>
-            <div class="content-links">
-              <a href="{% url "login" %}" class="link-success fw-bolder fs-5 me-1 link-offset-2 link-underline-opacity-50 link-underline-opacity-100-hover">Log out</a>
-              <a href="{% url "settings" %}" class="link-success fw-bolder fs-5 link-offset-2 link-underline-opacity-50 link-underline-opacity-100-hover">Settings</a>
-            </div>
-          </div>
-        </div>
+
+        {% include 'layouts/navbar1.html' %}
+        {% comment %} {% include 'layouts/notreg.html' %} {% endcomment %}
+
       </div>
     </div>
   </nav>
@@ -64,17 +53,17 @@
       <aside class="general_info col-lg-3 mb-2">
 
         <section class="popular-tags mb-3 text-white">
-          <h2 class="light-text fs-2 mb-3 mt-3">Popular Tags</h2>
+          <h2 class="light-text fs-2 mb-2 mt-3">Popular Tags</h2>
           {% for tag in popular_tags %}
-          <a class="badge rounded-pill text-bg-success link-light link-offset-1 link-underline-opacity-0 link-underline-opacity-100-hover" href="{% url "tag" tag.id %}">Tag {{ tag.id }}</a>
+          <a class="badge rounded-pill fs-6 mt-2 text-bg-success link-light link-offset-1 link-underline-opacity-0 link-underline-opacity-100-hover" href="{% url "tag" tag.id %}">Tag {{ tag.tag }}</a>
           {% endfor %}
         </section>
 
         <section class="best-members text-white">
           <h2 class="light-text fs-2 mb-3 mt-3">Best Members</h2>
-          <a href="#" class="fs-5 d-block link-light link-offset-2 link-underline-opacity-100-hover link-underline-opacity-50">Member 1</a>
-          <a href="#" class="fs-5 d-block link-light link-offset-2 link-underline-opacity-100-hover link-underline-opacity-50">Member 2</a>
-          <a href="#" class="fs-5 d-block link-light link-offset-2 link-underline-opacity-100-hover link-underline-opacity-50">Member 3</a>
+          {% for user in popular_users %}
+          <a class="fs-5 d-block link-light link-offset-2 link-underline-opacity-100-hover link-underline-opacity-50" href="{% url "user" user.id %}">{{ user.username }}</a>
+          {% endfor %}
         </section>
 
       </aside>
@@ -84,11 +73,15 @@
 
   <!---Footer-->
 
-  <footer class="footer mt-auto py-3">
+<footer class="footer mt-auto py-3 flex-row">
     <div class="container d-flex justify-content-center align-items-center">
       <span class="dark-text fs-5 text-white">2025 Discussion space</span>
+      <div class="theme-switch">
+        <input type="checkbox" id="theme" class="theme-switch__input">
+      </div>
     </div>
-  </footer>
+  </footer> 
+
 
   <script src="{% static '/js/index.js' %}"></script>
   <script src="{% static '/js/bootstrap.bundle.js' %}"></script>

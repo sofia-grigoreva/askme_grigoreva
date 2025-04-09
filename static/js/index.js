@@ -27,3 +27,17 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
+document.addEventListener('DOMContentLoaded', function() {
+  const themeSwitch = document.getElementById('theme');
+
+  themeSwitch.addEventListener('change', function() {
+      if (this.checked) {
+          document.body.setAttribute('data-bs-theme', 'dark');
+          console.log("dark");
+      } else {
+          document.body.setAttribute('data-bs-theme', 'light');
+          console.log("light");
+      }
+  });
+});
+

@@ -12,7 +12,7 @@
       {% with start=page_obj.number|add:"-2" end=page_obj.number|add:"2" %}
       {% for num in page_obj.paginator.page_range %}
         {% if num == page_obj.number %}
-          <li class="page-item current-page" ><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+          <li class="page-item current-page"><a class="page-link" id="cur-page" href="?page={{ num }}">{{ num }}</a></li>
         {% elif num >= start and num <= end %}
           <li class="page-item" ><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
         {% endif %}
@@ -24,7 +24,7 @@
       {% with start=1 end=5 %}
       {% for num in page_obj.paginator.page_range %}
         {% if num == page_obj.number %}
-          <li class="page-item current-page" ><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+          <li class="page-item current-page"><a class="page-link" id="cur-page" href="?page={{ num }}">{{ num }}</a></li>
         {% elif num >= start and num <= end %}
           <li class="page-item" ><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
         {% endif %}

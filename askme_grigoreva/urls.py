@@ -22,3 +22,6 @@ urlpatterns = [
     path('', include('app.urls')),
     path('admin/', admin.site.urls),
 ]
+
+handler404 = 'app.views.pageNotFound'
+handler500 = 'app.views.serverError'

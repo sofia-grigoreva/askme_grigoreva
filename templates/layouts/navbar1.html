@@ -1,0 +1,17 @@
+{% load static %}
+
+<div>
+    <a class="btn btn-outline-light fw-bolder fs-5 mt-3 mb-2 mt-lg-0 mb-lg-0" href="{% url "ask" %}" >Ask now!</a>
+  </div>
+  <div class="navbar-user d-flex gap-2 align-items-center">
+    <div class="me-2 mt-1 mb-1">
+      <img src="{% static '/img/avatar.jpg' %}" alt="avatar" class="img img-fluid" id="user-avatar">
+    </div>
+    <div class="content mb-1">
+      <div class="content-name text-white fs-3">Username</div>
+      <div class="content-links">
+        <a href="{% url "login" %}" class="link-light fw-bolder fs-5 me-1 link-offset-2 link-underline-opacity-50 link-underline-opacity-100-hover">Log out</a>
+        <a href="{% url "settings" %}" class="link-light fw-bolder fs-5 link-offset-2 link-underline-opacity-50 link-underline-opacity-100-hover">Settings</a>
+      </div>
+    </div>
+  </div>
