@@ -4,15 +4,28 @@
 {% block content %}
  
   <div class="d-flex align-items-center gap-2 mt-2">
-    <h1 class="dark-text fw-bolder fs-1">Settings: Username</h1>
+    <h1 class="dark-text fw-bolder fs-1">Settings: {{ request.user.profile.nickname }}</h1>
   </div>
 
-  <form>
-    {% include 'layouts/form.html' with class="set-label" text="Login" type="input" id="login" align="center" mt="mt-4" fill="" %}
-    {% include 'layouts/form.html' with class="set-label" text="Email" type="input" id="email" align="center" mt="mt-3" fill="" %}
-    {% include 'layouts/form.html' with class="set-label" text="NickName" type="input" id="nick" align="center" mt="mt-3" fill="" %}
-    {% include 'layouts/avatar_form.html' with mt="mt-3" class="set-label" %}
-    {% include 'layouts/button.html' with text="Save!" id="save-bth" style="" %}
+  <form action="{% url 'settings' %}" method="POST"  enctype="multipart/form-data">
+
+    {% include 'layouts/form.html' with label='set-label'%}
+
+    <div class="row d-flex align-items-center mt-3">
+      <div class="col-lg-auto">
+          <h2 class="set-label fs-4"></h2>
+      </div>
+      <div class="col-lg ml-2 flex-column align-items-center">
+        <div style="height: 200px; width: 200px" class="border mb-3">
+          <img src="{% static 'img/' %}{{ request.user.profile.avatar }}" alt="img" class="img-fluid ml-5">
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg ml-2 mb-3">
+      <button id="save-bth" class="bth mt-4 fw-bolder fs-5" type="submit">Save!</button>
+    </div>
+  
   </form>
 
   {% include 'layouts/pagination.html' %}

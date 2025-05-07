@@ -10,11 +10,11 @@
           <div class="col-lg-3 d-flex flex-column align-items-center">
             <div class="border mb-2 d-flex justify-content-center">
               <a href="{% url 'user' question.author.id %}">
-                <img src="{% static question.author.profile.avatar %}" alt="avatar" class="img img-fluid" id="big-avatar">
+                <img src="{% static 'img/' %}{{ question.author.profile.avatar }}" alt="avatar" class="img img-fluid" id="big-avatar">
               </a>
             </div>
             <a href="{% url 'user' question.author.id %}" class="mb-2 mt-2 mt-lg-0 fs-5 link-offset-1 text-body">
-              {{ question.author.username }}
+              {{ question.author.profile.nickname }}
             </a>
             <div class="d-flex justify-content-center">
               <button id="like-bth" type="button" class="btn btn-success"></button>
@@ -42,25 +42,35 @@
       <hr class="hr border-3 opacity-75">
     </div>
 
-    <articles class="mt-2 d-flex gap-3 flex-column">
-      {% for answer in answers %}
-      {% include 'layouts/answer.html' %}
-      {% endfor %}
+      {% if answers|length > 0 %}
+      <articles class="mt-2 d-flex gap-3 flex-column">
+        {% for answer in answers %}
+          {% include 'layouts/answer.html' %}
+        {% endfor %}
+      </articles>
+        {% include 'layouts/pagination.html' %}
+        <div class="me-lg-3">
+          <hr class="hr border-3 opacity-75">
+        </div>
+      {% else %}
+        <div class="light-text text-center fs-5 mt-0">No answers yet</div>
+      {% endif %}
     </articles>
 
-    {% include 'layouts/pagination.html' %}
-    
-    <div class="me-lg-3">
-      <hr class="hr border-3 opacity-75">
-    </div>
 
-    <form>
+    {% if request.user.is_authenticated %}
+    <form action="#" method="POST"  enctype="multipart/form-data">
+      {% csrf_token %}
       <div class="d-flex me-lg-3">
-      <textarea id="ans" class="form flex-fill border" placeholder="Enter your answer here..." aria-label="Search" rows="1"></textarea>
+        {{ form }}
       </div>
       <button id="ans-bth" class="bth mt-3 mb-3" type="submit">Answer!</button>
     </form>
+    {% else %}
+      <div class="light-text text-center fs-5 mt-0">Login or register to answer questions</div>
+    {% endif %}
 
+    
   </div>
 
 {% endblock %}

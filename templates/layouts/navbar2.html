@@ -1,6 +1,5 @@
 {% load static %}
-
 <div class="content-links fw-bolder fs-4 mt-lg-0 mt-2 mb-lg-0 mb-2">
-    <a href="{% url "login" %}" class="link-light me-2 link-offset-2 link-underline-opacity-50 link-underline-opacity-100-hover">Log in</a>
+    <a href="{% url 'login' %}?next={{ request.path }}" class="link-light me-2 link-offset-2 link-underline-opacity-50 link-underline-opacity-100-hover">Log in</a>
     <a href="{% url "signup" %}" class="link-light link-offset-2 link-underline-opacity-50 link-underline-opacity-100-hover">Register</a>
-  </div>
+</div>

@@ -32,8 +32,12 @@
           <button class="btn btn-outline-light" type="submit">Find!</button>
         </form>
 
-        {% include 'layouts/navbar1.html' %}
-        {% comment %} {% include 'layouts/notreg.html' %} {% endcomment %}
+        <div>
+          <a class="btn btn-outline-light fw-bolder fs-5 mt-3 mb-2 mt-lg-0 mb-lg-0" 
+          href="{% if request.user.is_authenticated %}{% url 'ask' %}{% else %}{% url 'login' %}?next=ask{% endif %}">Ask now!</a>
+        </div>
+
+        {% include request.user.is_authenticated|yesno:'layouts/navbar1.html,layouts/navbar2.html' %}
 
       </div>
     </div>
@@ -62,7 +66,7 @@
         <section class="best-members text-white">
           <h2 class="light-text fs-2 mb-3 mt-3">Best Members</h2>
           {% for user in popular_users %}
-          <a class="fs-5 d-block link-light link-offset-2 link-underline-opacity-100-hover link-underline-opacity-50" href="{% url "user" user.id %}">{{ user.username }}</a>
+          <a class="fs-5 d-block link-light link-offset-2 link-underline-opacity-100-hover link-underline-opacity-50" href="{% url "user" user.id %}">{{ user.profile.nickname }}</a>
           {% endfor %}
         </section>
 

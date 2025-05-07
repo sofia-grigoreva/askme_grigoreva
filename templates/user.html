@@ -9,12 +9,12 @@
           <div class="row">
             <div class="col-lg-3 d-flex flex-column align-items-center">
               <div class="border mb-2 d-flex justify-content-center">
-                <img src="{% static user.profile.avatar %}" alt="avatar" class="img img-fluid" id="big-avatar">
+                <img src="{% static 'img/' %}{{ user.profile.avatar }}" alt="avatar" class="img img-fluid" id="big-avatar">
               </div>
             </div>
             <div class="col-lg d-flex flex-column justify-content-center">
               <div class="text-center">
-                <h1 class="card-title display-4 mb-4">{{user.username}}</h1>
+                <h1 class="card-title display-4 mb-4">{{user.profile.nickname}}</h1>
                 <div class="d-flex justify-content-center gap-5">
                   <div class="text-muted">
                     <span class="d-block fs-5">Questions</span>
@@ -35,13 +35,17 @@
       <hr class="hr border-3 opacity-75">
     </div>
 
+    {% if user.questions.all|length > 0 %}
     <articles class="mt-2 d-flex gap-3 flex-column">
       {% for question in user.questions.all %}
-      {% include 'layouts/question.html' %}
+        {% include 'layouts/question.html' %}
       {% endfor %}
     </articles>
-
-    {% include 'layouts/pagination.html' %}
+      {% include 'layouts/pagination.html' %}
+    {% else %}
+      <div class="light-text text-center fs-5 mt-0">No questions yet</div>
+    {% endif %}
+  </articles>
 
   </div>
 

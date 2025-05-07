@@ -1,10 +1,33 @@
-<div class="row d-flex align-items-{{ align }} {{ mt }}">
+{% load static %}
+{% load bootstrap5 %}
+
+
+{% csrf_token %}
+
+{% for field in form %}
+<div class="row d-flex align-items-center mt-3">
     <div class="col-lg-auto">
-      <div>
-        <h2 class="{{ class }} fs-4">{{ text }}</h2>
-      </div>
+        <div>
+            <h2 class="{{ label }} fs-4">{{ field.label }}</h2>
+        </div>
     </div>
     <div class="col-lg ml-2 d-flex me-4">
-        <{{ type }} class="form {{ fill }} border" id="{{ id }}" placeholder="Enter {{ id }} here..."></{{ type }}>
+        {{ field }}
     </div>
-  </div>
+</div>
+
+{% if field.errors %}
+<div class="row d-flex align-items-center mt-1">
+    <div class="col-lg-auto">
+        <h2 class="{{ label }} fs-4"></h2>
+    </div>
+    <div class="col-lg ml-2 d-flex me-4">
+        {% for error in field.errors %}
+            <p class="text-danger fs-6 mb-0" id="{{ field.name }}-err">{{ error }}</p>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+{% endfor %}
+  

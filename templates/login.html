@@ -1,24 +1,27 @@
 {% extends "layouts/base.html" %}
 {% load static %}
+{% load bootstrap5 %}
 
 {% block content %}
 
-  <div class="d-flex align-items-center gap-2 mt-2 mb-3">
-    <h1 class="dark-text fw-bolder fs-1">Log In</h1>
+<div class="d-flex align-items-center gap-2 mt-2 mb-3">
+  <h1 class="dark-text fw-bolder fs-1">Log In</h1>
+</div>
+
+<form action="{% url 'login' %}" method="POST">
+
+  {% include 'layouts/form.html' with label='log-label'%}
+  <input type="hidden" name="next" value="{{ request.GET.next }}">
+
+  <div class="col-lg ml-2 mb-3">
+    <button id="login-bth" class="bth mt-4 fw-bolder fs-5" type="submit">Log in!</button>
   </div>
 
-  <form>
-    {% include 'layouts/form.html' with class="log-label" text="Login" type="input" id="login" align="center" mt="mt-2" fill="" %}
-    {% include 'layouts/error.html' with class="log-label" text="Login must not be empty"%}
-    {% include 'layouts/form.html' with class="log-label" text="Password" type="input" id="password" align="center" mt="mt-3" fill="" %}
-    {% include 'layouts/error.html' with class="log-label" text="The password must contain capital letters"%}
-    {% include 'layouts/button.html' with text="Log in!" id="login-bth" style=""%}
-  </form>
+</form>
 
-  <div class="mt-4 mb-lg-0 mb-3">
-    <a href="{% url "signup" %}" class="light-text fs-5 fw-bolder">create new account</a>
-  </div>
+<div class="mt-4 mb-lg-0 mb-3">
+  <a href="{% url "signup" %}" class="light-text fs-5 fw-bolder">create new account</a>
+</div>
 
-  {% include 'layouts/pagination.html' %}
-
+{% include 'layouts/pagination.html' %}
 {% endblock %}

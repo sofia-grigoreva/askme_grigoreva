@@ -55,12 +55,14 @@ class Command(BaseCommand):
             for row in reader:
                 tandt.append(row)
 
-        users = [User(username=(names[i%names_len] + str(i)), email='email@gmail.com', password='pass1234') for i in range(ratio)]
+        users = [User(username=(names[i%names_len] + " " + str(i)), email='email@gmail.com', password='pass1234') for i in range(ratio)]
         User.objects.bulk_create(users)
 
         profiles = []
+        i = 0
         for user in users:  
-            profiles.append(Profile(avatar='/img/avatar.jpg', user=user))
+            profiles.append(Profile(avatar=str(i%6) + 'avatar.jpg', user=user, nickname=user.username))
+            i += 1
         Profile.objects.bulk_create(profiles)
 
         self.stdout.write("Added users")
