@@ -1,19 +1,22 @@
 {% load static %}
+{% load custom_args %}
 
 <div class="card me-lg-3">
     <div class="card-body">
       <div class="row">
-        <div class="col-lg-2 d-flex flex-column align-items-center justify-content-center me-3 ms-2">
+        <div class="col-lg-2 d-flex flex-column align-items-center pe-0 me-3 ms-2">
           <div class="border mb-2 d-flex justify-content-center">
             <a href="{% url 'user' question.author.id %}">
-              <img src="{% static 'img/' %}{{ question.author.profile.avatar }}" alt="avatar" class="img img-fluid">
+              <img src="{{ MEDIA_URL }}{{ question.author.profile.avatar.url }}" alt="Avatar" class="img img-fluid"> 
             </a>
           </div>
+          {% if request.user.is_authenticated %}
           <div class="d-flex justify-content-center">
-            <button id="like-bth" type="button" class="btn btn-success"></button>
-            <div class="border d-flex justify-content-center align-items-center me-2 ms-2" style="width:50px;">{{ question.get_likes }}</div>
-            <button id="dislike-bth" type="button" class="btn btn-danger"></button>
+            <button type="button" id="like-bth" class="btn btn-success" data-type="like" data-cur="{% call_method question 'like' request.user %}" data-id="{{ question.id }}" data-object="question"></button>
+            <div class="border d-flex justify-content-center align-items-center me-2 ms-2" data-id="{{ question.id }}" style="width:50px;">{{ question.get_likes }}</div>
+            <button type="button" id="dislike-bth" class="btn btn-danger" data-type="dislike" data-cur="{% call_method question 'like' request.user %}" data-id="{{ question.id }}" data-object="question"></button>    
           </div>
+          {% endif %}
         </div>
         <div class="col-lg d-flex flex-column justify-content-between">
           <div>

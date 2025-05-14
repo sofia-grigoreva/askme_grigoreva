@@ -3,7 +3,8 @@ from django.contrib.auth.models import User
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from app.models import Profile, Question, Tag, Answer
-
+from django.core.files.storage import FileSystemStorage
+from django.contrib import auth
 
 class LoginForm(forms.Form):
     username = forms.CharField(
@@ -23,10 +24,23 @@ class LoginForm(forms.Form):
         label='Password'
     )
 
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super(LoginForm, self).__init__(*args, **kwargs)
+    
     def clean(self):
         data = super().clean()
         data['username'] = data['username'].strip()
         data['password'] = data['password'].strip()
+
+        user = auth.authenticate(
+            username=data['username'],
+            password=data['password']
+        )
+        if not(user):
+            raise forms.ValidationError("Неверный логин или пароль")
+        
+        
         return data
 
 
@@ -73,7 +87,7 @@ class RegistrationForm(forms.Form):
     )
     avatar = forms.ImageField(
         widget=forms.FileInput(attrs={
-            'class': 'form border',
+            'class': 'avatar-input',
             'id': 'avatar',
             'accept': 'image/*',
         }),
@@ -111,7 +125,7 @@ class RegistrationForm(forms.Form):
 
         return data
     
-    def create_user(self):
+    def save(self):
         data = self.cleaned_data
 
         user = User.objects.create_user(
@@ -152,11 +166,11 @@ class SettingsForm(forms.Form):
     )
     avatar = forms.CharField(
         widget=forms.FileInput(attrs={
-            'class': 'form border',
+            'class': 'avatar-input',
             'id': 'avatar',
             'accept': 'image/*',
         }),
-        label='Upload avatar',
+        label='Avatar',
         required=False
     )
     
@@ -185,7 +199,7 @@ class SettingsForm(forms.Form):
 
         return data
     
-    def update_user(self):
+    def save(self):
         data = self.cleaned_data
         self.user.email = data['email']
         self.user.save()
@@ -237,7 +251,7 @@ class AskForm(forms.Form):
         cleaned_data['title'] = cleaned_data['title'].strip()
         return cleaned_data
     
-    def create_question(self):
+    def save(self):
         data = self.cleaned_data
         print(data)
 
@@ -275,7 +289,7 @@ class AnswerForm(forms.Form):
         cleaned_data['text'] = cleaned_data['text'].strip()
         return cleaned_data
     
-    def create_answer(self):
+    def save(self):
         data = self.cleaned_data
         answer = Answer.objects.create(
             text=data['text'],

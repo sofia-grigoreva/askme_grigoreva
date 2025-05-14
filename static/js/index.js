@@ -1,6 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    
-  
   function setAsideHeight() {
     const navbar = document.querySelector('.navbar');
     const footer = document.querySelector('.footer');
@@ -24,10 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   window.addEventListener('load', setAsideHeight);
   window.addEventListener('resize', setAsideHeight);
-});
 
-
-document.addEventListener('DOMContentLoaded', function() {
   const themeSwitch = document.getElementById('theme');
 
   themeSwitch.addEventListener('change', function() {
@@ -38,5 +33,26 @@ document.addEventListener('DOMContentLoaded', function() {
           document.body.setAttribute('data-bs-theme', 'light');
           console.log("light");
       }
+  });
+
+  document.getElementById('avatar').addEventListener('change', function(event) {
+    console.log("av");
+    const file = event.target.files[0];
+    const previewContainer = document.getElementById('avatar-preview');
+    const previewImage = document.getElementById('preview-image');
+    
+    if (file) {
+      const reader = new FileReader();
+      
+      reader.onload = function(e) {
+        previewImage.src = e.target.result;
+        previewContainer.style.display = 'block';
+      }
+      
+      reader.readAsDataURL(file);
+    } else {
+      previewImage.src = '#';
+      previewContainer.style.display = 'none';
+    }
   });
 });

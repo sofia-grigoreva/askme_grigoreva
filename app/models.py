@@ -57,6 +57,15 @@ class Tag(models.Model):
     # questions
     objects = TagManager()
 
+class AnswerManager(models.Manager):
+    def get_by_question(self, question):
+        return self.filter(question=question)
+    
+    def get_amount(self, question):
+        return Answer.objects.filter(question=question).count()
+    
+    def get(self, id):
+        return get_object_or_404(Answer, pk=id)
 
 class Question(models.Model):
     title = models.CharField(max_length=255)
@@ -80,21 +89,32 @@ class Question(models.Model):
 
     objects = QuestionManager()
 
+    def like(self, user):
+        type = "None"
+        like = QuestionLike.objects.filter(question=self, user=user).first()
+        if like:
+            type = like.type
+        return type
+    
+    def get_like(self, user):
+        return QuestionLike.objects.filter(question=self, user=user).first()
+    
+    def create_like(self, user, type):
+        like = QuestionLike.objects.create(
+            user=user,
+            question=self,
+            type=type
+        )
+        return 
+
     def get_likes(self):
         likes = QuestionLike.objects.filter(type=True, question=self).count()
         dislikes = QuestionLike.objects.filter(type=False, question=self).count()
         return likes - dislikes
     
+    
     class Meta:
         ordering = ['-created_at']
-
-
-class AnswerManager(models.Manager):
-    def get_by_question(self, question):
-        return self.filter(question=question)
-    
-    def get_amount(self, question):
-        return Answer.objects.filter(question=question).count()
 
 
 class Answer(models.Model):
@@ -119,6 +139,24 @@ class Answer(models.Model):
     )
 
     objects = AnswerManager()
+
+    def like(self, user):
+        type = "None"
+        like = AnswerLike.objects.filter(answer=self, user=user).first()
+        if like:
+            type = like.type
+        return type
+    
+    def get_like(self, user):
+        return AnswerLike.objects.filter(answer=self, user=user).first()
+    
+    def create_like(self, user, type):
+        like = AnswerLike.objects.create(
+            user=user,
+            answer=self,
+            type=type
+        )
+        return 
 
     def get_likes(self):
         likes = AnswerLike.objects.filter(type=True, answer=self).count()
@@ -153,7 +191,7 @@ class Profile(models.Model):
         on_delete=models.CASCADE, 
         related_name="profile"
     )
-    avatar = models.CharField(max_length=255)
+    avatar = models.ImageField(null=True, blank=True, default="avatar.jpg", upload_to="avatar/%Y/%m/%d")
     nickname = models.CharField(max_length=255, default='')
 
     objects = ProfileManager()

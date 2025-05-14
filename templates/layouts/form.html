@@ -4,30 +4,58 @@
 
 {% csrf_token %}
 
-{% for field in form %}
-<div class="row d-flex align-items-center mt-3">
-    <div class="col-lg-auto">
-        <div>
-            <h2 class="{{ label }} fs-4">{{ field.label }}</h2>
-        </div>
-    </div>
-    <div class="col-lg ml-2 d-flex me-4">
-        {{ field }}
-    </div>
-</div>
-
-{% if field.errors %}
-<div class="row d-flex align-items-center mt-1">
-    <div class="col-lg-auto">
-        <h2 class="{{ label }} fs-4"></h2>
-    </div>
-    <div class="col-lg ml-2 d-flex me-4">
-        {% for error in field.errors %}
-            <p class="text-danger fs-6 mb-0" id="{{ field.name }}-err">{{ error }}</p>
-        {% endfor %}
-    </div>
+{% if form.non_field_errors %}
+<div class="col-lg ml-2 d-flex me-4 alert alert-danger">
+    {% for error in form.non_field_errors %}
+        {{ error }}
+    {% endfor %}
 </div>
 {% endif %}
 
+
+{% for field in form %}
+    {% if field.name == 'avatar' %}
+
+        <div class="row d-flex align-items-center mt-3">
+            <div class="col-lg-auto">
+                <div>
+                    <h2 class="{{ label }} fs-4">{{ field.label }}</h2>
+                </div>
+            </div>
+            <div class="avatar-upload col-lg ml-2 d-flex me-4" >
+                <label for="{{ field.id_for_label }}" class="avatar-label">
+                    <span class="upload-text fs-5 fw-bolder">Upload avatar</span>
+                </label>
+                {{ field }}
+            </div>
+        </div>
+
+    {% else %}
+        <div class="row d-flex align-items-center mt-3">
+            <div class="col-lg-auto">
+                <div>
+                    <h2 class="{{ label }} fs-4">{{ field.label }}</h2>
+                </div>
+            </div>
+            <div class="col-lg ml-2 d-flex me-4">
+                {{ field }}
+            </div>
+        </div>
+        
+
+        {% if field.errors %}
+            <div class="row d-flex align-items-center mt-1">
+                <div class="col-lg-auto">
+                    <h2 class="{{ label }} fs-4"></h2>
+                </div>
+                <div class="col-lg ml-2 d-flex me-4">
+                    {% for error in field.errors %}
+                        <p class="text-danger fs-6 mb-0" id="{{ field.name }}-err">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+    {% endif %}
 {% endfor %}
+
   

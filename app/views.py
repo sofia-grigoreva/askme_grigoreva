@@ -2,11 +2,15 @@ from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
 from django.contrib import auth
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from .models import Tag, Profile, Question, Answer, AnswerLike, QuestionLike
 from .forms import LoginForm, RegistrationForm, SettingsForm, AskForm, AnswerForm
+from django.http import JsonResponse
+import json
+from django.contrib import messages
 
 
 def paginate(objects_list, request, per_page=20):
@@ -14,28 +18,6 @@ def paginate(objects_list, request, per_page=20):
     paginator = Paginator(objects_list, per_page)
     page = paginator.page(page_num)
     return page
-
-
-def authentificate(request, form):
-    user = auth.authenticate(request, **form.cleaned_data)
-    if user:
-        auth.login(request, user)
-        next = request.POST.get('next')
-        if next and next != '/login/':
-            return redirect(next)
-        return redirect(reverse('index'))
-    elif Profile.objects.exist(login=form.cleaned_data.get('username')):
-        form.add_error('password', 'Password is incorrect')
-    else:
-        form.add_error('username', 'User does not exist')
-    return None
-
-
-def registrate(request, form):
-    user = form.create_user()
-    auth.login(request, user)
-    return redirect(reverse('index'))
-
 
 def index(request):
     page = paginate(Question.objects.all(), request)
@@ -50,7 +32,7 @@ def question(request, question_id):
     if request.method == 'POST':
         form = AnswerForm(request.POST, user=request.user, question=question)
         if form.is_valid():
-            form.create_answer()
+            form.save()
             return redirect(reverse('question', kwargs={'question_id': question_id}))
     else:
         form = AnswerForm(user=request.user)
@@ -94,9 +76,12 @@ def login(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
-            response = authentificate(request, form)
-            if response:
-                return response
+            user = auth.authenticate(request, **form.cleaned_data)
+            auth.login(request, user)
+            next = request.POST.get('next')
+            if next and next != '/login/':
+                return redirect(next)
+            return redirect(reverse('index'))
     else:
         form = LoginForm()
     return render(request, 'login.html', context={'form': form})
@@ -109,12 +94,14 @@ def logout(request):
 
 
 def signup(request):
+    if request.user.is_authenticated:
+        return redirect(reverse('index'))
     if request.method == 'POST':
         form = RegistrationForm(request.POST, request.FILES)
         if form.is_valid():
-            response = registrate(request, form)
-            if response:
-                return response
+            user = form.save()
+            auth.login(request, user)
+            return redirect(reverse('index'))
     else:
         form = RegistrationForm()
     return render(request, 'signup.html', context={'form': form})
@@ -125,7 +112,9 @@ def settings(request):
     if request.method == 'POST':
         form = SettingsForm(request.POST, request.FILES, user=request.user)
         if form.is_valid():
-            form.update_user()
+            form.save()
+            messages.success(request, 'Your profile has been updated successfully!')
+            return redirect(reverse('settings'))
     else:
         form = SettingsForm(user=request.user)
     return render(request, 'settings.html', context={'form': form})
@@ -136,10 +125,56 @@ def ask(request):
     if request.method == 'POST':
         form = AskForm(request.POST, user=request.user)
         if form.is_valid():
-            return redirect(reverse('question', kwargs={'question_id': form.create_question()}))
+            return redirect(reverse('question', kwargs={'question_id': form.save()}))
     else:
         form = AskForm(user=request.user)
     return render(request, 'ask.html', context={'form': form})
+
+
+def updatelikes(object, type, id, user):
+    status = "None"
+    obj = object.objects.get(id)
+    if type == "like":
+        type = True
+    else:
+        type = False
+    like = obj.get_like(user)
+    if like:
+        if like.type == type:
+            like.delete()
+        else:
+            like.type = type
+            like.save()
+            status = type
+    else:
+        obj.create_like(user=user, type=type)
+        status = type
+    score = obj.get_likes()
+    print(score)
+    print(object)
+    return JsonResponse({"score": f'{score}', "status" : f'{status}'})
+
+
+@login_required
+@require_POST
+def like(request, id):
+    if request.method == 'POST':
+        type = json.loads(request.body).get('type')
+        object = json.loads(request.body).get('object')
+    if object == "question":
+        return updatelikes(Question, type, id, request.user)
+    return updatelikes(Answer, type, id, request.user)
+
+@login_required
+@require_POST
+def check(request, id):
+    print('get')
+    if request.method == 'POST':
+        answer = Answer.objects.get(id)
+        answer.is_checked = not(answer.is_checked)
+        answer.save()
+        print(answer.is_checked)
+    return JsonResponse({"status" : f'{answer.is_checked}'})
 
 
 def pageNotFound(request, exception):

@@ -1,7 +1,7 @@
 {% load static %}
 <div class="navbar-user d-flex gap-2 align-items-center">
   <div class="me-2 mt-1 mb-1">
-    <img src="{% static 'img/' %}{{ request.user.profile.avatar }}" alt="avatar" class="img img-fluid" id="user-avatar">
+    <img src="{{ MEDIA_URL }}{{ request.user.profile.avatar.url }}" alt="avatar" class="img img-fluid" id="user-avatar">
   </div>
   <div class="content mb-1">
     <a href="{% url 'user' request.user.id %}" class="text-decoration-none">

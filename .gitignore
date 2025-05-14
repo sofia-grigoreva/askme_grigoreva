@@ -3,3 +3,4 @@ venv/
 *.pot
 *.pyc
 ideas.txt
+uploads/

@@ -10,6 +10,19 @@
   <form action="{% url 'signup' %}" method="POST" enctype="multipart/form-data">
 
     {% include 'layouts/form.html' with label='reg-label'%}
+
+    <div id="avatar-preview" style="display: none;">
+      <div class="row d-flex align-items-center mt-3">
+        <div class="col-lg-auto">
+            <h2 class="reg-label fs-4"></h2>
+        </div>
+        <div class="col-lg ml-2 flex-column align-items-center">
+          <div style="height: 200px; width: 200px" class="border mb-3">
+            <img id="preview-image" src="#" class="img-fluid ml-5"> 
+          </div>
+        </div>
+      </div>
+    </div>
   
     <div class="row d-flex align-items-center mt-3 mb-3">
       <div style="width: 50px"></div>

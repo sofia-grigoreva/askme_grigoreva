@@ -9,7 +9,16 @@
 
   <form action="{% url 'settings' %}" method="POST"  enctype="multipart/form-data">
 
+    {% if messages %}
+      {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">
+              {{ message }}
+          </div>
+      {% endfor %}
+    {% endif %}
+
     {% include 'layouts/form.html' with label='set-label'%}
+    <input type="hidden" name="next" value="{{ request.GET.next }}">
 
     <div class="row d-flex align-items-center mt-3">
       <div class="col-lg-auto">
@@ -17,13 +26,13 @@
       </div>
       <div class="col-lg ml-2 flex-column align-items-center">
         <div style="height: 200px; width: 200px" class="border mb-3">
-          <img src="{% static 'img/' %}{{ request.user.profile.avatar }}" alt="img" class="img-fluid ml-5">
+          <img id="preview-image" src="{{ MEDIA_URL }}{{ request.user.profile.avatar.url }}" alt="img" class="img-fluid ml-5"> 
         </div>
       </div>
     </div>
 
     <div class="col-lg ml-2 mb-3">
-      <button id="save-bth" class="bth mt-4 fw-bolder fs-5" type="submit">Save!</button>
+      <button id="save-bth" class="bth mt-2 fw-bolder fs-5" type="submit">Save!</button>
     </div>
   
   </form>
