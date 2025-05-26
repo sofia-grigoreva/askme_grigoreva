@@ -5,6 +5,9 @@ from django.core.exceptions import ValidationError
 from app.models import Profile, Question, Tag, Answer
 from django.core.files.storage import FileSystemStorage
 from django.contrib import auth
+import json
+from django.conf import settings
+import requests
 
 class LoginForm(forms.Form):
     username = forms.CharField(
@@ -298,3 +301,16 @@ class AnswerForm(forms.Form):
             is_checked=False
         )
         answer.score.set([])
+
+        data = json.dumps({
+            "channel": "channel",
+            "data": {
+                "id": answer.id,
+                "text": answer.text,
+                "url": answer.author.profile.avatar.url,
+                "author": answer.author.id
+            }
+        })
+
+        headers = {'Content-type': 'application/json', 'X-API-Key': settings.CENTRIFUGO_API_KEY}
+        resp = requests.post("http://" + settings.CENTRIFUGO_URL + "/api/publish", data=data, headers=headers)

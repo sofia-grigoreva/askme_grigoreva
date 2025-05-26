@@ -2,15 +2,18 @@ from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_POST, require_GET
 from django.contrib import auth
 from django.urls import reverse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from .models import Tag, Profile, Question, Answer, AnswerLike, QuestionLike
 from .forms import LoginForm, RegistrationForm, SettingsForm, AskForm, AnswerForm
-from django.http import JsonResponse
-import json
 from django.contrib import messages
+from django.conf import settings
+import jwt
+import time
+import json
+from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 
 
 def paginate(objects_list, request, per_page=20):
@@ -18,6 +21,7 @@ def paginate(objects_list, request, per_page=20):
     paginator = Paginator(objects_list, per_page)
     page = paginator.page(page_num)
     return page
+
 
 def index(request):
     page = paginate(Question.objects.all(), request)
@@ -32,17 +36,20 @@ def question(request, question_id):
     if request.method == 'POST':
         form = AnswerForm(request.POST, user=request.user, question=question)
         if form.is_valid():
-            form.save()
+            data = form.save()
             return redirect(reverse('question', kwargs={'question_id': question_id}))
     else:
         form = AnswerForm(user=request.user)
     
     page = paginate(Answer.objects.get_by_question(question_id), request, 30)
+    token = jwt.encode({"sub": str(request.user.id), "exp": int(time.time()) + 10*60}, settings.CENTRIFUGO_HMAC_SECRET, algorithm="HS256")
     return render(request, 'question.html', context={
         'question': question,
         'answers': page.object_list,
         'page_obj': page,
-        'form': form
+        'form': form,
+        'token': token,
+        "cfurl": settings.CENTRIFUGO_URL
     })
 
 
@@ -108,7 +115,7 @@ def signup(request):
 
 
 @login_required
-def settings(request):
+def edit(request):
     if request.method == 'POST':
         form = SettingsForm(request.POST, request.FILES, user=request.user)
         if form.is_valid():
@@ -150,8 +157,6 @@ def updatelikes(object, type, id, user):
         obj.create_like(user=user, type=type)
         status = type
     score = obj.get_likes()
-    print(score)
-    print(object)
     return JsonResponse({"score": f'{score}', "status" : f'{status}'})
 
 
@@ -165,16 +170,48 @@ def like(request, id):
         return updatelikes(Question, type, id, request.user)
     return updatelikes(Answer, type, id, request.user)
 
+
 @login_required
 @require_POST
 def check(request, id):
-    print('get')
     if request.method == 'POST':
         answer = Answer.objects.get(id)
         answer.is_checked = not(answer.is_checked)
         answer.save()
-        print(answer.is_checked)
     return JsonResponse({"status" : f'{answer.is_checked}'})
+
+
+@require_GET
+def suggestions(request):
+    query = request.GET.get('q', '').strip()
+    questions = Question.objects.annotate(q=SearchVector('title') + SearchVector('text')).filter(q=query)[:10]
+    suggestions = [
+        {
+            'id': q.id,
+            'title': q.title,
+            'text': q.text
+        }
+        for q in questions
+    ]
+    return JsonResponse({'results': suggestions})
+
+
+@require_GET
+def search(request):
+    query = request.GET.get('q', '').strip()
+    questions = Question.objects.annotate(q=SearchVector('title') + SearchVector('text')).filter(q=query)
+    page = paginate(questions, request)
+    if len(questions) == 0:
+        return render(request, 'search.html', context={
+        'title': "Nothing found for your request",
+    })
+    page = paginate(questions, request)
+    title = "Explore Results for: " + query
+    return render(request, 'search.html', context={
+        'questions': page.object_list,
+        'page_obj': page,
+        'title': title,
+    })
 
 
 def pageNotFound(request, exception):

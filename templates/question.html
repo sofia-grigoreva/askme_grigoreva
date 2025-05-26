@@ -46,7 +46,7 @@
     </div>
 
       {% if answers|length > 0 %}
-      <articles class="mt-2 d-flex gap-3 flex-column">
+      <articles class="mt-2 d-flex gap-3 flex-column" id="answers">
         {% for answer in answers %}
           {% include 'layouts/answer.html' %}
         {% endfor %}
@@ -71,9 +71,79 @@
     </form>
     {% else %}
       <div class="light-text text-center fs-5 mt-0 mb-4">Login or register to answer questions</div>
-    {% endif %}
-
-    
+    {% endif %}    
   </div>
+
+  <script src="https://unpkg.com/centrifuge@5.2.2/dist/centrifuge.js"></script>
+  <script>
+    const CENTRIFUGO_TOKEN = "{{ token }}"
+    const ans_field = document.getElementById('answers');
+  
+    const centrifuge = new Centrifuge("ws://{{ cfurl }}/connection/websocket", {
+      token: CENTRIFUGO_TOKEN
+    });
+  
+    centrifuge.on('connecting', function (ctx) {
+      console.log(`connecting: ${ctx.code}, ${ctx.reason}`);
+    }).on('connected', function (ctx) {
+      console.log(`connected over ${ctx.transport}`);
+    }).on('disconnected', function (ctx) {
+      console.log(`disconnected: ${ctx.code}, ${ctx.reason}`);
+    }).connect();
+  
+    const sub = centrifuge.newSubscription("channel");
+  
+    sub.on('publication', function (ctx) {
+      const IS_AUTHENTICATED = {% if request.user.is_authenticated %}true{% else %}false{% endif %};
+      const IS_Q_AUTHOR = IS_AUTHENTICATED && {% if ctx.data.author == request.user.id %}true{% else %}false{% endif %};
+  
+      const answerElement = document.createElement('div');
+      answerElement.id = `answer-${ctx.data.id}`;
+      answerElement.className = 'card me-lg-3';
+      answerElement.innerHTML = `
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-2 d-flex flex-column align-items-center pe-0 me-3 ms-2">
+              <div class="border mb-2 d-flex justify-content-center">
+                <a href="/user/${ctx.data.author.id}">
+                  <img src="${ctx.data.url}" alt="avatar" class="img img-fluid">
+                </a>
+              </div>
+              ${IS_AUTHENTICATED ? `
+              <div class="d-flex justify-content-center">
+                <button type="button" id="like-bth" class="btn btn-success" data-type="like" data-cur="None" data-id="${ctx.data.id}" data-object="answer"></button>
+                <div class="border d-flex justify-content-center align-items-center me-2 ms-2" data-id="${ctx.data.id}" style="width:50px;">0</div>
+                <button type="button" id="dislike-bth" class="btn btn-danger" data-type="dislike" data-cur="None" data-id="${ctx.data.id}" data-object="answer"></button>
+              </div>
+              ` : ''}
+            </div>
+            <div class="col-lg d-flex flex-column justify-content-between mt-3 mt-lg-0">
+              <div>
+                <p class="card-text mt-3">${ctx.data.text}</p>
+              </div>
+              ${IS_Q_AUTHOR ? `
+              <form class="d-flex align-items-center mt-3 mt-lg-0">
+                <input class="my-checkbox form-check-input me-2" type="checkbox" value="" id="cor-form" data-id="${ctx.data.id}" data-cur="None">
+                <label class="light-text form-check-label fs-5" for="cor-form">
+                  Correct!
+                </label>
+              </form>
+              ` : ''}
+            </div>
+          </div>
+        </div>
+      `;
+      
+      ans_field.appendChild(answerElement);
+  
+      console.log(`get: ${ctx.data.id}`);
+    }).on('subscribing', function (ctx) {
+      console.log(`subscribing: ${ctx.code}, ${ctx.reason}`);
+    }).on('subscribed', function (ctx) {
+      console.log('subscribed', ctx);
+    }).on('unsubscribed', function (ctx) {
+      console.log(`unsubscribed: ${ctx.code}, ${ctx.reason}`);
+    }).subscribe();
+  </script>
 
 {% endblock %}

@@ -1,0 +1,24 @@
+{
+  "client": {
+    "token": {
+      "hmac_secret_key": "MsTBJRFU4615aeQaomgqoOFOFbJFigBDCh0FItsHsKeNZL7Imu1eFH66nLx_f1d20a0da64ZNgLrE2B7lzrKsQ"
+    },
+    "allowed_origins": ["*"]
+  },
+  "admin": {
+    "enabled": true,
+    "password": "1234",
+    "secret": "pYfVXslgZk667xNJgzfscE5xP8DSdgjolIl7jWm9IgIiYB1cCPCnti1ohiEU46lGf-_Xi_o_8RLjR4kgR1tuBA"
+  },
+  "http_api": {
+    "key": "ZU_to0SP2I3y07N9mgAdtVfQbk6l6VbQPH34_BAmjBhrE0qrCc5tOGmD2QImAqLpgro34iaxxT0k9qVNaJe-Qg"
+  },
+  "channel": {
+    "without_namespace": {
+      "allow_subscribe_for_client": true
+    }
+  },
+  "http_server": {
+    "port": 8010
+  }
+}

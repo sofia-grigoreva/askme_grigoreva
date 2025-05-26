@@ -1,43 +1,18 @@
+{% load static %}
+
 <!doctype html>
 <html lang="en">
 
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+  <link href="{% static '/css/bootstrap.css' %}" rel="stylesheet" />
+  <link href="{% static '/css/index.css' %}" rel="stylesheet" />
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static '/favicon/apple-touch-icon.png' %}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{% static '/favicon/favicon-32x32.png' %}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{% static '/favicon/favicon-16x16.png' %}">
+  <link rel="manifest" href="{% static '/favicon/site.webmanifest' %}"> 
   <title>Page Not Found | Discussion Space</title>
-  <style>
-    body {
-      background-color: #f8f1ff;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-    .error-frame {
-      background-color: #ffffff;
-      border: 3px solid #4a198a; 
-      border-radius: 15px;
-      box-shadow: 0 10px 30px rgba(138, 43, 226, 0.2);
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 3rem;
-    }
-    .purple-text {
-      color: #4a198a;
-    }
-    .btn-purple {
-      background-color: #4a198a;
-      color: white;
-      border: none;
-      padding: 10px 25px;
-      border-radius: 50px;
-      transition: all 0.3s ease;
-    }
-    .btn-purple:hover {
-      background-color: #4a198a;
-      color: #f8f1ff;
-      box-shadow: 0 15px 30px rgba(74, 25, 138, 0.4);
-    }
-  </style>
 </head>
 <body class="d-flex flex-column min-vh-100">
 
@@ -46,17 +21,22 @@
       <h1 class="display-1 fw-bold purple-text mb-4">{{ error }}</h1>
       <h2 class="fs-1 purple-text mb-4">Oops! Something went wrong</h2>
       <a href="{% url 'index' %}" class="btn btn-purple btn-lg">
-        <i class="bi bi-house-door-fill me-2"></i> Go to Homepage
+        <i class="bi me-2"></i> Go to Homepage
       </a>
     </div>
   </main>
 
-  <footer class="footer mt-auto py-3 text-center">
-    <div class="container">
-      <span class="text-muted">© 2025 Discussion Space.</span>
+  <footer class="footer mt-auto py-3 flex-row">
+    <div class="container d-flex justify-content-center align-items-center">
+      <span class="dark-text fs-5 text-white">2025 Discussion space</span>
+      <div class="theme-switch">
+        <input type="checkbox" id="theme" class="theme-switch__input">
+      </div>
     </div>
-  </footer>
+  </footer> 
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="{% static '/js/index.js' %}"></script>
+  <script src="{% static '/js/likes.js' %}"></script>
+  <script src="{% static '/js/bootstrap.bundle.js' %}"></script>
 </body>
 </html>

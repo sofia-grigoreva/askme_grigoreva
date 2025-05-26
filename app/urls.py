@@ -12,10 +12,12 @@ urlpatterns = [
     path('signup/', views.signup, name="signup"),
     path('question/<int:question_id>/', views.question, name="question"),
     path('tag/<int:tag_id>/', views.tag, name="tag"),
-    path('profile/edit/', views.settings, name="settings"),
+    path('profile/edit/', views.edit, name="settings"),
     path('user/<int:user_id>/', views.user, name="user"),
     path('like/<int:id>/', views.like, name="like"),
     path('check/<int:id>/', views.check, name="check"),
+    path('search/', views.search, name="search"),
+    path('suggestions/', views.suggestions, name="suggestions"),
 ]
 
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -2,7 +2,9 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import Count
 from django.shortcuts import get_object_or_404
-
+from django.db.models import Sum, Q
+from django.utils import timezone
+from datetime import timedelta
 
 class TagManager(models.Manager):
     def get_top(self):
@@ -10,7 +12,7 @@ class TagManager(models.Manager):
             self.get_queryset()
             .annotate(count=Count('questions'))
             .order_by('-count')
-            [:7]
+            [:10]
         )
     
     def get_all(self):
@@ -41,11 +43,19 @@ class QuestionManager(models.Manager):
 
 class ProfileManager(models.Manager):
     def get_top(self):
+    
+        week = timezone.now() - timedelta(days=7)
+        
         return (
             User.objects
-            .annotate(count=Count('answers'))
-            .order_by('-count')
-            [:5]
+            .annotate(
+                score=Sum(
+                    'questions__score',
+                    filter=Q(questions__created_at__gte=week)
+                )
+            )
+            .order_by('-score')
+            [:10]
         )
     
     def exist(self, login):
@@ -54,7 +64,6 @@ class ProfileManager(models.Manager):
 
 class Tag(models.Model):
     tag = models.CharField(max_length=255)
-    # questions
     objects = TagManager()
 
 class AnswerManager(models.Manager):
@@ -163,8 +172,6 @@ class Answer(models.Model):
         dislikes = AnswerLike.objects.filter(type=False, answer=self).count()
         return likes - dislikes
     
-    class Meta:
-        ordering = ['-created_at']
 
 
 class AnswerLike(models.Model):

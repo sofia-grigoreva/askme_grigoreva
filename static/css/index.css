@@ -236,6 +236,35 @@
   outline: none;
 }
 
+/* ---Error----------------------------------------------------------------------- */
+
+.error-frame {
+  border: 3px solid #4a198a; 
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(138, 43, 226, 0.2);
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 3rem;
+}
+
+.purple-text {
+  color: #4a198a;
+}
+
+.btn-purple {
+  background-color: #4a198a;
+  color: white;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 50px;
+}
+
+.btn-purple:hover {
+  background-color: #4a198a;
+  color: #f8f1ff;
+  box-shadow: 0 15px 30px rgba(74, 25, 138, 0.4);
+}
+
 /* ---Hr----------------------------------------------------------------------- */
 
 .hr {
@@ -505,4 +534,25 @@ body[data-bs-theme="dark"] .avatar-label:hover {
 body[data-bs-theme="dark"] .avatar-label:active {
   background: #009479;
   border-color: #009479;
+}
+
+/* ---Error----------------------------------------------------------------------- */
+
+body[data-bs-theme="dark"] .error-frame {
+  border: 3px solid #009479; 
+  box-shadow: 0 10px 30px rgba(23, 68, 47, 0.25);
+}
+
+body[data-bs-theme="dark"] .purple-text{
+  color: #009479;
+}
+
+body[data-bs-theme="dark"] .btn-purple{
+  background-color: #009479;
+}
+
+body[data-bs-theme="dark"] .btn-purple:hover {
+  background-color: #009479;
+  color: #f8f1ff;
+  box-shadow: 0 15px 30px rgba(23, 68, 47, 0.25);
 }
